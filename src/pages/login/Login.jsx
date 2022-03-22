@@ -1,4 +1,14 @@
-import React, { useState } from "react";
+// import "./login.scss"
+
+// const Login = () => {
+//   return (
+//     <div>Login</div>
+//   )
+// }
+
+// export default Login
+
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -7,8 +17,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -17,8 +25,6 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-// import required from "required";
-
 const listUsers = [
   {
     phone: "0123456789",
@@ -26,11 +32,16 @@ const listUsers = [
   },
 ];
 
+// const styles = makeStyles({
+//   error : {
+//     color: red
+//   }
+// })
+
 const theme = createTheme();
 
-function SignIn() {
-  // const [phone, setPhone] = React.useState("");
-  // const [password, setPassword] = React.useState("");
+function Login() {
+  // const classes = useStyles();
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -42,17 +53,14 @@ function SignIn() {
       phone: yup
         .string()
         .required("Required")
-        .matches(
-          /^[0-9]{10}$/,
-          "Please enter a valid phone number"
-        ),
+        .matches(/^[0-9]{10}$/, "Please enter a valid phone number"),
       password: yup
         .string()
         .required("Required")
         .length(8, "Must be 8 characters"),
     }),
     onSubmit: () => {
-      navigate("/dashboard");
+      navigate("/")
     },
   });
 
@@ -63,9 +71,12 @@ function SignIn() {
         <Box
           sx={{
             marginTop: 8,
+            padding: 5,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            borderRadius: "2rem ",
+            border: '2px solid #f1f3f4'
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
@@ -134,4 +145,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default Login;
