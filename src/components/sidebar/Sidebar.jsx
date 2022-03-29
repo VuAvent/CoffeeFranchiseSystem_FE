@@ -11,12 +11,20 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
-
+import { useDispatch, useSelector } from "react-redux";
+import { logOut } from "../../redux/actions/authAction";
 const Sidebar = () => {
-  const { dispatch } = useContext(DarkModeContext);
+  const state = useSelector((state) => state.token);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const handleSignOut = () => {
+    dispatch(logOut());
+    navigate("/login");
+  };
   return (
     <div className="sidebar">
       <div className="top">
@@ -35,10 +43,16 @@ const Sidebar = () => {
             </li>
           </Link>
           <p className="title">LISTS</p>
+          <Link to="/branch" style={{ textDecoration: "none" }}>
+            <li>
+              <StoreIcon className="icon" />
+              <span>Branch</span>
+            </li>
+          </Link>
           <Link to="/users" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
-              <span>Users</span>
+              <span>Employee</span>
             </li>
           </Link>
           <Link to="/products" style={{ textDecoration: "none" }}>
@@ -60,12 +74,12 @@ const Sidebar = () => {
             <AccountCircleOutlinedIcon className="icon" />
             <span>Profile</span>
           </li>
-          <Link to="/login" style={{ textDecoration: "none" }}>
-            <li>
+          {/* <Link to="#" style={{ textDecoration: "none" }}> */}
+          <li onClick={handleSignOut}>
             <ExitToAppIcon className="icon" />
             <span>Logout</span>
-            </li>
-          </Link>
+          </li>
+          {/* </Link> */}
         </ul>
       </div>
       {/* <div className="bottom">

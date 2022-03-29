@@ -1,16 +1,52 @@
 import "./datatable.scss";
+import React, { useState, useEffect, useRef } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { userColumns, userRows } from "../../datatablesource";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  loadEmployees,
+  disableEmployees,
+} from "../../redux/actions/employeeAction";
+import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 const Datatable = () => {
-  const [data, setData] = useState(userRows);
+  const navigate = useNavigate();
+  const { employees } = useSelector((state) => state.employeeReducer);
 
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadEmployees());
+  }, [dispatch]);
+
+  const [open, setOpen] = useState(false);
+
+  const [id, setId] = useState();
+  const handleClickOpen = (id) => {
+    setOpen(true);
+    setId(id);
   };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleAgree = () => {
+    dispatch(disableEmployees(id));
+    dispatch(loadEmployees());
+    handleClose();
+  };
+
+  const [status, setStatus] = useState(true);
+  const onChangeStatus = () => {
+    setStatus(!status);
+  };
   const actionColumn = [
     {
       field: "action",
@@ -19,14 +55,17 @@ const Datatable = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="/users/test" style={{ textDecoration: "none" }}>
-              <div className="viewButton">View</div>
-            </Link>
+            <div
+              className="viewButton"
+              onClick={() => navigate(`/users/${params.row.id}`)}
+            >
+              View
+            </div>
             <div
               className="deleteButton"
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => handleClickOpen(params.row.id)}
             >
-              Delete
+              Disable
             </div>
           </div>
         );
@@ -36,19 +75,39 @@ const Datatable = () => {
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New User
+        Employee Manage
         <Link to="/users/new" className="link">
           Add New
         </Link>
       </div>
       <DataGrid
         className="datagrid"
-        rows={data}
+        rows={employees}
         columns={userColumns.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
-        checkboxSelection
       />
+      <div>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Confirm disable?"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to disable this element?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Disagree</Button>
+            <Button onClick={handleAgree}>Agree</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     </div>
   );
 };

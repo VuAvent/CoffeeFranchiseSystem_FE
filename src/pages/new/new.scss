@@ -14,7 +14,7 @@
       display: flex;
 
       h1 {
-        color: lightgray;
+        color: #a0a0a0;
         font-size: 20px;
       }
 
@@ -59,19 +59,18 @@
               border-bottom: 1px solid gray;
             }
           }
-
-          button {
-            width: 150px;
-            padding: 10px;
-            border: none;
-            background-color: teal;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-          }
         }
       }
     }
   }
+}
+button {
+  width: 150px;
+  padding: 10px;
+  border: none;
+  background-color: teal;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
 }

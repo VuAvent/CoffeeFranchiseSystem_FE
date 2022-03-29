@@ -1,14 +1,6 @@
-// import "./login.scss"
-
-// const Login = () => {
-//   return (
-//     <div>Login</div>
-//   )
-// }
-
-// export default Login
-
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logIn } from "../../redux/actions/authAction";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -24,24 +16,10 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-const listUsers = [
-  {
-    phone: "0123456789",
-    password: "01234567",
-  },
-];
-
-// const styles = makeStyles({
-//   error : {
-//     color: red
-//   }
-// })
-
+import { toast } from "react-toastify";
 const theme = createTheme();
 
 function Login() {
-  // const classes = useStyles();
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -60,9 +38,25 @@ function Login() {
         .length(8, "Must be 8 characters"),
     }),
     onSubmit: () => {
-      navigate("/")
+      navigate("/");
     },
   });
+
+  const auth = useSelector((state) => state.authReducer);
+  const dispatch = useDispatch();
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(logIn(username, password));
+    // .then((res) => {
+    //   navigate("/");
+    // })
+    // .catch(() => toast.errors("Invalid username or password"));
+  };
+  if (auth.token) navigate("/");
 
   return (
     <ThemeProvider theme={theme}>
@@ -76,7 +70,7 @@ function Login() {
             flexDirection: "column",
             alignItems: "center",
             borderRadius: "2rem ",
-            border: '2px solid #f1f3f4'
+            border: "2px solid #f1f3f4",
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
@@ -87,7 +81,8 @@ function Login() {
           </Typography>
           <Box
             component="form"
-            onSubmit={formik.handleSubmit}
+            // onSubmit={formik.handleSubmit}
+            onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
           >
@@ -95,12 +90,14 @@ function Login() {
               margin="normal"
               required
               fullWidth
-              id="phone"
-              label="Phone Number"
-              name="phone"
-              value={formik.values.phone}
-              onChange={formik.handleChange}
-              autoComplete="phone"
+              id="username"
+              label="Username"
+              name="username"
+              // value={formik.values.phone}
+              // onChange={formik.handleChange}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              autoComplete="username"
               autoFocus
             />
             {formik.errors.phone}
@@ -112,8 +109,10 @@ function Login() {
               label="Password"
               type="password"
               id="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
+              // value={formik.values.password}
+              // onChange={formik.handleChange}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
             />
             {formik.errors.password}
