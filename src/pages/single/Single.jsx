@@ -3,18 +3,18 @@ import "./styleCSS.css";
 import "./single.scss";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
+import { useNavigate } from "react-router-dom";
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 import { uploadImage } from "../../redux/actions/imageAction";
-
 import { useDispatch, useSelector } from "react-redux";
 import {
   loadEmployeeById,
   updateEmployee,
 } from "../../redux/actions/employeeAction";
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import Select, { components } from "react-select";
+import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { loadRoles } from "../../redux/actions/roleAction";
@@ -23,8 +23,9 @@ import { loadBranchs } from "../../redux/actions/branchAction";
 const Single = () => {
   const [isEdit, setIsEdit] = useState(false);
 
-  const { userId } = useParams();
+  const { employeeId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [birth, setBirth] = useState(new Date());
   const [username, setUsername] = useState();
@@ -43,7 +44,7 @@ const Single = () => {
   };
 
   useEffect(() => {
-    dispatch(loadEmployeeById(userId));
+    dispatch(loadEmployeeById(employeeId));
     dispatch(loadRoles());
     dispatch(loadBranchs());
   }, [dispatch]);
@@ -105,7 +106,7 @@ const Single = () => {
   const handleUpdate = () => {
     dispatch(
       updateEmployee(
-        userId,
+        employeeId,
         username,
         name,
         genderOption.value,
@@ -117,6 +118,7 @@ const Single = () => {
         avatar
       )
     );
+    setIsEdit(!isEdit);
   };
 
   const handleCancelForm = () => {

@@ -11,6 +11,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { useDispatch, useSelector } from "react-redux";
 import { updateBranch } from "../../redux/actions/branchAction";
+import { useNavigate } from "react-router-dom";
 
 const CardBranch = (props) => {
   const { item } = props;
@@ -22,7 +23,7 @@ const CardBranch = (props) => {
   const [branchStatus, setBranchStatus] = useState(item.status);
 
   useEffect(() => {
-    if (branchStatus === "inactive") {
+    if (branchStatus === "INACTIVE") {
       setBackgroundColor("rgba(255, 0, 0, 0.2)");
       setLogoColor("crimson");
       setStatusSwitch(false);
@@ -46,14 +47,16 @@ const CardBranch = (props) => {
   };
 
   const handleChangeStatus = () => {
-    if (branchStatus === "inactive") setBranchStatus("active");
-    if (branchStatus === "active") setBranchStatus("inactive");
+    if (branchStatus === "INACTIVE") setBranchStatus("ACTIVE");
+    if (branchStatus === "ACTIVE") setBranchStatus("INACTIVE");
   };
 
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const handleUpdate = () => {
     dispatch(updateBranch(name, address, branchStatus, item.id));
+    handleClose();
+    // navigate("/");
   };
   return (
     <div className="widget col-3" onClick={handleClickOpen}>

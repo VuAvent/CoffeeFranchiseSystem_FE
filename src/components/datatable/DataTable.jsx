@@ -1,7 +1,7 @@
 import "./datatable.scss";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { userColumns, userRows } from "../../datatablesource";
+import { userColumns } from "../../datatablesource";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -57,7 +57,7 @@ const Datatable = () => {
           <div className="cellAction">
             <div
               className="viewButton"
-              onClick={() => navigate(`/users/${params.row.id}`)}
+              onClick={() => navigate(`/employees/${params.row.id}`)}
             >
               View
             </div>
@@ -76,7 +76,7 @@ const Datatable = () => {
     <div className="datatable">
       <div className="datatableTitle">
         Employee Manage
-        <Link to="/users/new" className="link">
+        <Link to="/employees/new" className="link">
           Add New
         </Link>
       </div>

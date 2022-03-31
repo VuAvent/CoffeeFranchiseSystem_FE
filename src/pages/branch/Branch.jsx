@@ -36,6 +36,8 @@ const Branch = () => {
 
   const handleCreate = () => {
     dispatch(createBranch(branchName, branchAddress));
+    handleClose();
+    dispatch(loadBranchs());
   };
   return (
     <div className="branch">

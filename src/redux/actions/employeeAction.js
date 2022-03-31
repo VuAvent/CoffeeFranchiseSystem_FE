@@ -1,5 +1,8 @@
 import axios from "axios";
 import { setAuthHeaders } from "../../utils/index";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+toast.configure();
 
 const headers = setAuthHeaders();
 
@@ -13,7 +16,7 @@ export const loadEmployees = () => {
           payload: res.data,
         });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => toast.error(error));
   };
 };
 
@@ -27,7 +30,7 @@ export const loadEmployeeById = (id) => {
           payload: res.data,
         });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => toast.error(error));
   };
 };
 
@@ -60,12 +63,13 @@ export const createEmployee = (
         headers
       )
       .then((res) => {
+        toast.success("Create Successfully");
         dispatch({
           type: "CREATE_EMPLOYEE",
           payload: res.data,
         });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => toast.error(error));
   };
 };
 
@@ -99,12 +103,13 @@ export const updateEmployee = (
         headers
       )
       .then((res) => {
+        toast.success("Update Successfully");
         dispatch({
           type: "UPDATE_EMPLOYEE",
           payload: res.data,
         });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => toast.error(error));
   };
 };
 
@@ -121,6 +126,6 @@ export const disableEmployees = (id) => {
           payload: res.data,
         });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => toast.error(error));
   };
 };
