@@ -3,18 +3,15 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from "react-redux";
 import { loadRoles } from "../../redux/actions/roleAction";
 import { loadBranchs } from "../../redux/actions/branchAction";
-import {
-  createEmployee,
-  updateEmployee,
-} from "../../redux/actions/employeeAction";
+import { createEmployee } from "../../redux/actions/employeeAction";
 import { uploadImage } from "../../redux/actions/imageAction";
+import { useNavigate } from "react-router-dom";
 
 const New = () => {
   const [file, setFile] = useState(null);
@@ -43,12 +40,15 @@ const New = () => {
         avatar
       )
     );
+    navigate("/employees");
   };
 
   const [role, setRole] = useState();
   const { roles } = useSelector((state) => state.roleReducer);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   useEffect(() => {
     dispatch(loadRoles());
     dispatch(loadBranchs());

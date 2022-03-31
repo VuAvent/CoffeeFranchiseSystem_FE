@@ -1,5 +1,8 @@
 import axios from "axios";
 import { setAuthHeaders } from "../../utils/index";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+toast.configure();
 
 const getBranchs = (branchs) => ({
   type: "GET_BRANCHS",
@@ -13,7 +16,7 @@ export const loadBranchs = () => {
       .then((res) => {
         dispatch(getBranchs(res.data));
       })
-      .catch((error) => console.log(error));
+      .catch((error) => toast.error(error));
   };
 };
 
@@ -30,12 +33,13 @@ export const createBranch = (name, address) => {
         headers
       )
       .then((res) => {
+        toast.success("Create Successfully");
         dispatch({
           type: "CREATE_BRANCH",
           payload: res.data,
         });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => toast.error(error));
   };
 };
 
@@ -53,11 +57,12 @@ export const updateBranch = (name, address, status, id) => {
         headers
       )
       .then((res) => {
+        toast.success("Update Successfully");
         dispatch({
           type: "UPDATE_BRANCH",
           payload: res.data,
         });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => toast.error(error));
   };
 };
